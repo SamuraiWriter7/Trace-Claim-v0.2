@@ -1,0 +1,88 @@
+trace_claim:
+  schema_version: "trace-claim-v0.2"
+  claim_id: "trace-2026-05-11-0002"
+  generated_at: "2026-05-11T13:45:00+09:00"
+
+  engine:
+    wing: "trace-wing"
+    version: "0.1.0"
+    mode: "multi-wing"
+
+  target_artifact:
+    artifact_id: "note-trace-wing-agent-v0-2-001"
+    artifact_type: "note_article"
+    title: "Trace Wing Agent v0.2 の位置づけ"
+    uri: "https://note.example.com/articles/trace-wing-agent-v0-2-001"
+    observed_at: "2026-05-11T13:30:00+09:00"
+    published_at: "2026-05-11T13:10:00+09:00"
+    author_claim: "HANZO"
+    content_hash: "sha256:4ae7dc9d24f917f0efc71d71f4b321f2d7a9157cb49f38fd3c4d1a3e89a028ab"
+    language: "ja"
+
+  classification:
+    lineage_type: "derived"
+    novelty_score: 0.66
+    summary: >
+      対象コンテンツは、Kazene系に見られる
+      「構造優先」「推論と執行の分離」「Multi-Wing分散統合」
+      という特徴を保持しつつ、claim_scope を導入することで
+      trace_claim の運用境界を明確化した派生仕様と推定される。
+
+  claim_scope: "royalty_assessment_ready"
+
+  confidence: 0.92
+
+  origin_candidate:
+    source_id: "github-trace-wing-agent-v0.1"
+    author: "Shidenkai Alpha"
+    title: "Trace Wing Agent v0.1"
+    uri: "https://github.example.com/shidenkai-alpha/trace-wing-agent-v0.1"
+    published_at: "2026-05-11T12:00:00+09:00"
+    confidence: 0.92
+
+  evidence:
+    structural_similarity: 0.95
+    temporal_precedence: 0.89
+    motif_overlap:
+      - "structure_over_surface"
+      - "inference_before_enforcement"
+      - "evidence_before_assertion"
+      - "multi_wing_distribution"
+      - "royalty_feedback_path"
+    mutation_notes:
+      - "claim_scope was added to clarify operational scope"
+      - "trace claim semantics were extended without collapsing inference into enforcement"
+      - "downstream routing became more explicit for royalty assessment"
+    protocol_pattern_match: 0.93
+    citation_gap: 0.81
+    supporting_artifacts:
+      - source_id: "github-trace-wing-agent-v0.1"
+        title: "Trace Wing Agent v0.1"
+        uri: "https://github.example.com/shidenkai-alpha/trace-wing-agent-v0.1"
+        role: "origin"
+      - source_id: "github-trace-claim-v0.2"
+        title: "Trace Claim v0.2 Schema Draft"
+        uri: "https://github.example.com/shidenkai-alpha/trace-wing-agent-v0.1/schemas/trace-claim-v0.2.schema.json"
+        role: "comparison"
+      - source_id: "note-trace-wing-agent-v0-2-001"
+        title: "Trace Wing Agent v0.2 の位置づけ"
+        uri: "https://note.example.com/articles/trace-wing-agent-v0-2-001"
+        role: "target"
+
+  policy_result:
+    attribution_suggestion: true
+    public_accusation_allowed: false
+    human_review_required: true
+    royalty_assessment_allowed: true
+    recommended_action: "request_royalty_assessment"
+
+  review:
+    status: "pending"
+    review_ticket_id: "review-trace-2026-05-11-0002"
+    notes: "claim_scope indicates royalty assessment readiness, but human review is still required."
+
+  audit:
+    processing_run_id: "run-trace-wing-2026-05-11-134500"
+    state: "ROYALTY_ELIGIBLE"
+    created_by_event: "artifact.observed"
+    log_ref: "log://trace-wing/runs/run-trace-wing-2026-05-11-134500"
