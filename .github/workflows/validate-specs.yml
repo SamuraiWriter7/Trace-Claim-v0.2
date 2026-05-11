@@ -1,4 +1,4 @@
-name: Validate Trace Wing Specs
+name: Validate Trace Claim v0.2
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
           echo "=== Repository file tree ==="
           find . -maxdepth 4 -type f | sort
 
-      - name: Validate Trace Wing specification and claim artifacts
+      - name: Validate trace claim v0.2 schema and sample
         run: |
           python - <<'PY'
           import json
@@ -40,16 +40,10 @@ jobs:
           import yaml
           from jsonschema import Draft202012Validator
 
-          print("=== Validating Trace Wing repository ===")
+          print("=== Validating Trace Claim v0.2 repository ===")
 
-          spec_path = Path("spec/trace-wing-agent-v0.1.yaml")
-          spec_schema_path = Path("schemas/trace-wing-agent-v0.1.schema.json")
-
-          claim_v01_schema_path = Path("schemas/trace-claim-v0.1.schema.json")
-          claim_v02_schema_path = Path("schemas/trace-claim-v0.2.schema.json")
-
-          sample_v01_path = Path("examples/trace-claim.sample.yaml")
-          sample_v02_path = Path("examples/trace-claim-v0.2.sample.yaml")
+          schema_path = Path("schemas/trace-claim-v0.2.schema.json")
+          sample_path = Path("examples/trace-claim-v0.2.sample.yaml")
 
           failed = False
 
@@ -61,22 +55,6 @@ jobs:
                   return False
               return True
 
-          def load_yaml(path: Path, label: str):
-              global failed
-              try:
-                  with path.open("r", encoding="utf-8") as f:
-                      data = yaml.safe_load(f)
-                  print(f"OK: {label} YAML parsed successfully: {path}")
-                  return data
-              except yaml.YAMLError as e:
-                  print(f"ERROR: Invalid YAML in {label} file {path}: {e}")
-                  failed = True
-                  return None
-              except Exception as e:
-                  print(f"ERROR: Failed to read {label} file {path}: {e}")
-                  failed = True
-                  return None
-
           def load_json(path: Path, label: str):
               global failed
               try:
@@ -86,6 +64,22 @@ jobs:
                   return data
               except json.JSONDecodeError as e:
                   print(f"ERROR: Invalid JSON in {label} file {path}: {e}")
+                  failed = True
+                  return None
+              except Exception as e:
+                  print(f"ERROR: Failed to read {label} file {path}: {e}")
+                  failed = True
+                  return None
+
+          def load_yaml(path: Path, label: str):
+              global failed
+              try:
+                  with path.open("r", encoding="utf-8") as f:
+                      data = yaml.safe_load(f)
+                  print(f"OK: {label} YAML parsed successfully: {path}")
+                  return data
+              except yaml.YAMLError as e:
+                  print(f"ERROR: Invalid YAML in {label} file {path}: {e}")
                   failed = True
                   return None
               except Exception as e:
@@ -112,60 +106,28 @@ jobs:
                   failed = True
 
           print("\n=== Checking required files ===")
-          spec_ok = require_file(spec_path, "Spec")
-          spec_schema_ok = require_file(spec_schema_path, "Spec schema")
-          claim_v01_schema_ok = require_file(claim_v01_schema_path, "Trace claim v0.1 schema")
-          claim_v02_schema_ok = require_file(claim_v02_schema_path, "Trace claim v0.2 schema")
-          sample_v01_ok = require_file(sample_v01_path, "Trace claim v0.1 sample")
-          sample_v02_ok = require_file(sample_v02_path, "Trace claim v0.2 sample")
+          schema_ok = require_file(schema_path, "Trace claim v0.2 schema")
+          sample_ok = require_file(sample_path, "Trace claim v0.2 sample")
 
           print("\n=== Loading files ===")
-          spec_data = load_yaml(spec_path, "Spec") if spec_ok else None
-          spec_schema_data = load_json(spec_schema_path, "Spec schema") if spec_schema_ok else None
+          schema_data = load_json(schema_path, "Trace claim v0.2 schema") if schema_ok else None
+          sample_data = load_yaml(sample_path, "Trace claim v0.2 sample") if sample_ok else None
 
-          claim_v01_schema_data = load_json(claim_v01_schema_path, "Trace claim v0.1 schema") if claim_v01_schema_ok else None
-          claim_v02_schema_data = load_json(claim_v02_schema_path, "Trace claim v0.2 schema") if claim_v02_schema_ok else None
+          print("\n=== Validating schema ===")
+          if schema_data is not None:
+              validate_schema(schema_data, schema_path, "Trace claim v0.2")
 
-          sample_v01_data = load_yaml(sample_v01_path, "Trace claim v0.1 sample") if sample_v01_ok else None
-          sample_v02_data = load_yaml(sample_v02_path, "Trace claim v0.2 sample") if sample_v02_ok else None
-
-          print("\n=== Validating schemas ===")
-          if spec_schema_data is not None:
-              validate_schema(spec_schema_data, spec_schema_path, "Spec")
-          if claim_v01_schema_data is not None:
-              validate_schema(claim_v01_schema_data, claim_v01_schema_path, "Trace claim v0.1")
-          if claim_v02_schema_data is not None:
-              validate_schema(claim_v02_schema_data, claim_v02_schema_path, "Trace claim v0.2")
-
-          print("\n=== Validating instances against schemas ===")
-          if spec_data is not None and spec_schema_data is not None:
-              if not isinstance(spec_data, dict):
-                  print(f"ERROR: Spec root must be a mapping/object: {spec_path}")
+          print("\n=== Validating sample against schema ===")
+          if sample_data is not None and schema_data is not None:
+              if not isinstance(sample_data, dict):
+                  print(f"ERROR: Trace claim v0.2 sample root must be a mapping/object: {sample_path}")
                   failed = True
               else:
-                  validate_instance(spec_data, spec_schema_data, spec_path, "Spec")
-
-          if sample_v01_data is not None and claim_v01_schema_data is not None:
-              if not isinstance(sample_v01_data, dict):
-                  print(f"ERROR: Trace claim v0.1 sample root must be a mapping/object: {sample_v01_path}")
-                  failed = True
-              else:
-                  validate_instance(sample_v01_data, claim_v01_schema_data, sample_v01_path, "Trace claim v0.1 sample")
-
-          if sample_v02_data is not None and claim_v02_schema_data is not None:
-              if not isinstance(sample_v02_data, dict):
-                  print(f"ERROR: Trace claim v0.2 sample root must be a mapping/object: {sample_v02_path}")
-                  failed = True
-              else:
-                  validate_instance(sample_v02_data, claim_v02_schema_data, sample_v02_path, "Trace claim v0.2 sample")
+                  validate_instance(sample_data, schema_data, sample_path, "Trace claim v0.2 sample")
 
           print("\n=== Summary ===")
-          print(f"Spec:                     {spec_path}")
-          print(f"Spec schema:              {spec_schema_path}")
-          print(f"Trace claim v0.1 schema:  {claim_v01_schema_path}")
-          print(f"Trace claim v0.2 schema:  {claim_v02_schema_path}")
-          print(f"Trace claim v0.1 sample:  {sample_v01_path}")
-          print(f"Trace claim v0.2 sample:  {sample_v02_path}")
+          print(f"Schema: {schema_path}")
+          print(f"Sample: {sample_path}")
 
           if failed:
               print("\nValidation failed.")
@@ -173,3 +135,5 @@ jobs:
 
           print("\nAll validations passed.")
           PY
+
+
