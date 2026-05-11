@@ -1,58 +1,96 @@
-# Trace Wing Agent v0.2
+# Trace Claim v0.2
 
-Trace Wing Agent v0.2 is a protocol-driven provenance inference agent for Multi-Wing systems.  
-It infers structural lineage, proposes attribution, and emits trace claims for downstream review, dispute, and value-routing layers.  
+Trace Claim v0.2 is a versioned output contract for provenance inference in Multi-Wing environments.  
+It defines a machine-readable claim format for structural lineage, attribution suggestion, and governance-aware routing.  
 A trace claim is a structured inference artifact, not a legal verdict.
 
 ---
 
 ## Overview
 
-**Trace Wing** is an agent designed to analyze the structural lineage of documents, posts, specifications, and logs.
+This repository publishes the **Trace Claim v0.2** contract as a lightweight, validation-ready package.
 
-Instead of focusing only on surface wording, it compares:
+It currently includes:
 
-- semantic patterns
-- structural composition
-- cyclical logic
-- protocol-like design motifs
-
-Its primary purpose is to generate a **trace claim**: a structured output describing likely origin candidates, lineage type, confidence, evidence bundle, and policy outcome.
-
-This repository defines the minimum portable specification for that behavior.
-
----
-
-## What this repository contains
-
-This repository currently includes:
-
-- the core agent specification for Trace Wing
-- a JSON Schema for validating the agent spec itself
-- two JSON Schemas for validating emitted trace claim artifacts
-- example trace claim artifacts for both v0.1 and v0.2
+- the JSON Schema for `trace-claim-v0.2`
+- a sample YAML artifact validated against that schema
 - a GitHub Actions workflow for automated validation
+- repository documentation and license metadata
+
+This repository is intentionally minimal.
+
+It does **not** currently publish the full Trace Wing agent specification.  
+Instead, it focuses on the portable output contract that downstream systems can consume.
+
+In other words:
+
+- **Trace Wing Agent** may generate trace claims
+- **this repository** defines and validates the **claim artifact format**
 
 ---
 
-## Design goals
+## Purpose
 
-Trace Wing is designed around the following principles:
+The purpose of `trace_claim` is to carry structured provenance inference results across systems.
+
+A trace claim can express:
+
+- likely origin candidates
+- lineage classification
+- confidence level
+- evidence bundle
+- policy outcome
+- operational scope
+
+This allows downstream systems to interpret provenance results in a controlled and auditable way.
+
+Typical downstream consumers include:
+
+- review workflows
+- governance layers
+- dispute preparation layers
+- royalty assessment layers
+- archival or provenance registries
+
+---
+
+## Why v0.2 exists
+
+`trace-claim-v0.2` extends the baseline trace claim model by introducing:
+
+- `claim_scope`
+
+This field clarifies the intended operational scope of a claim.
+
+Examples include:
+
+- `structural_lineage_only`
+- `attribution_suggestion_only`
+- `royalty_assessment_ready`
+- `dispute_ready`
+
+This makes the contract more useful for governance-oriented routing without collapsing inference into enforcement.
+
+---
+
+## Design posture
+
+Trace Claim v0.2 follows these principles:
 
 - **Structure over surface**  
-  The system should compare structural composition, not just wording.
+  The claim should describe structural lineage rather than shallow wording similarity alone.
 
 - **Inference before enforcement**  
-  Trace Wing proposes lineage and attribution; it does not directly punish, accuse, or execute sanctions.
+  A trace claim may support review or routing, but it is not itself a verdict.
 
 - **Evidence before assertion**  
-  Every claim should be backed by observable fields and score breakdowns.
+  Claims should carry observable evidence fields.
 
-- **Human review for high-impact outcomes**  
-  High-confidence or high-impact cases should pass through review.
+- **Operational scope must be explicit**  
+  The meaning of a claim should be bounded through `claim_scope`.
 
-- **Separation of inference and value execution**  
-  Attribution inference, royalty calculation, dispute handling, and legal interpretation belong to different layers.
+- **Governance compatibility**  
+  The contract should be easy to connect to review, dispute, attribution, and value-routing systems.
 
 ---
 
@@ -60,13 +98,14 @@ Trace Wing is designed around the following principles:
 
 This repository does **not** define:
 
-- automatic legal infringement judgment
-- automatic truth verification
-- automatic public accusation
+- the full Trace Wing agent runtime
+- a legal infringement decision engine
+- a truth-verification engine
+- automatic accusation logic
 - automatic penalty execution
-- full payment logic for Royalty OS
+- a complete royalty settlement system
 
-Trace Wing is an inference layer, not a sovereign judge.
+This repository defines an **output contract**, not a complete civilization stack.
 
 ---
 
@@ -74,515 +113,329 @@ Trace Wing is an inference layer, not a sovereign judge.
 
 ```text
 .
-├─ spec/
-│  └─ trace-wing-agent-v0.1.yaml
 ├─ schemas/
-│  ├─ trace-wing-agent-v0.1.schema.json
-│  ├─ trace-claim-v0.1.schema.json
 │  └─ trace-claim-v0.2.schema.json
 ├─ examples/
-│  ├─ trace-claim.sample.yaml
 │  └─ trace-claim-v0.2.sample.yaml
 └─ .github/
    └─ workflows/
       └─ validate-specs.yml
-```
 
-### Structure notes
-
-- `spec/trace-wing-agent-v0.1.yaml`  
-  Core agent specification for Trace Wing.
-
-- `schemas/trace-wing-agent-v0.1.schema.json`  
-  Schema used to validate the Trace Wing spec itself.
-
-- `schemas/trace-claim-v0.1.schema.json`  
-  Baseline schema for the original trace claim output contract.
-
-- `schemas/trace-claim-v0.2.schema.json`  
-  Extended trace claim schema introducing `claim_scope` for operational scope clarity.
-
-- `examples/trace-claim.sample.yaml`  
-  Example artifact for `trace-claim-v0.1`.
-
-- `examples/trace-claim-v0.2.sample.yaml`  
-  Example artifact for `trace-claim-v0.2`.
-
-- `.github/workflows/validate-specs.yml`  
-  Validation workflow for the spec and both trace claim versions.
-
----
-
-## Start Here
+LICENSE
+README.md
+Structure notes
+schemas/trace-claim-v0.2.schema.json
+The JSON Schema for the Trace Claim v0.2 contract.
+examples/trace-claim-v0.2.sample.yaml
+A sample artifact showing a valid trace_claim instance.
+.github/workflows/validate-specs.yml
+Automated validation for the schema and the sample.
+README.md
+Repository documentation.
+LICENSE
+License metadata for the repository.
+Start Here
 
 Read the files in this order:
 
-1. **`spec/trace-wing-agent-v0.1.yaml`**  
-   The main protocol specification for the Trace Wing agent.
+schemas/trace-claim-v0.2.schema.json
+The machine-readable definition of the claim contract.
+examples/trace-claim-v0.2.sample.yaml
+A valid example showing how the contract is instantiated.
+.github/workflows/validate-specs.yml
+The CI workflow that validates the schema and the sample.
 
-2. **`schemas/trace-wing-agent-v0.1.schema.json`**  
-   The schema used to validate the spec file itself.
+This order gives the clearest path:
 
-3. **`schemas/trace-claim-v0.1.schema.json`**  
-   The baseline output schema for the original trace claim contract.
+first understand the contract
+then inspect a concrete instance
+then confirm how validation is enforced
+Core files
+schemas/trace-claim-v0.2.schema.json
 
-4. **`examples/trace-claim.sample.yaml`**  
-   A minimal example of a valid `trace-claim-v0.1` artifact.
+This is the primary contract file in the repository.
 
-5. **`schemas/trace-claim-v0.2.schema.json`**  
-   The extended output schema introducing `claim_scope`.
+It defines the required structure of a trace_claim, including fields such as:
 
-6. **`examples/trace-claim-v0.2.sample.yaml`**  
-   A valid example of `trace-claim-v0.2`, showing how operational scope is expressed.
+schema_version
+claim_id
+generated_at
+engine
+target_artifact
+classification
+claim_scope
+confidence
+origin_candidate
+evidence
+policy_result
+review
+audit
 
-7. **`.github/workflows/validate-specs.yml`**  
-   Automated validation for the spec and both trace claim versions.
+This schema is intended to act as a stable machine-readable contract for downstream provenance-aware systems.
 
-Suggested reading path:
+examples/trace-claim-v0.2.sample.yaml
 
-- start with the agent spec
-- confirm the spec shape through its schema
-- read the baseline claim contract
-- compare the extended claim contract in v0.2
-- inspect the examples
-- check CI validation last
+This file demonstrates a valid trace claim instance.
 
----
+It shows:
 
-## Core files
+how a target artifact is described
+how lineage type and novelty are represented
+how claim_scope is expressed
+how evidence is bundled
+how policy and review status are attached
+how audit metadata is recorded
 
-### `spec/trace-wing-agent-v0.1.yaml`
+This sample is validated in CI against the schema.
 
-Defines the Trace Wing agent itself, including:
+.github/workflows/validate-specs.yml
 
-- identity
-- runtime assumptions
-- input model
-- processing pipeline
-- fingerprint model
-- lineage model
-- policy thresholds
-- Multi-Wing integration points
-- observability and safeguards
+This workflow ensures that the repository stays consistent.
 
-This is the conceptual and operational center of the repository.
+It validates:
 
----
+presence of required files
+JSON syntax of the schema
+YAML syntax of the sample
+JSON Schema correctness
+schema compliance of the sample artifact
 
-### `schemas/trace-wing-agent-v0.1.schema.json`
+This makes the repository lightweight but still trustworthy.
 
-Validates the structure of the spec file.
+Contract summary
 
-This ensures that the Trace Wing specification remains machine-checkable and stable across revisions.
+The primary object defined by this repository is:
 
-It verifies, among other things:
+trace_claim
 
-- required top-level sections
-- allowed enums and object shapes
-- scoring model structure
-- policy threshold fields
-- integration definitions
+A trace claim is a portable structured inference artifact.
 
----
+It is designed to answer questions such as:
 
-### `schemas/trace-claim-v0.1.schema.json`
+What artifact is being evaluated?
+What lineage type was inferred?
+Which origin candidate is most likely?
+How strong is the inference?
+What evidence supports it?
+What operational scope does this claim have?
+What downstream action is appropriate?
+claim_scope
 
-Validates the **baseline trace claim** artifact emitted by the agent.
+The most important addition in v0.2 is:
 
-A valid `trace-claim-v0.1` includes fields such as:
+claim_scope
 
-- `claim_id`
-- `generated_at`
-- `engine`
-- `target_artifact`
-- `classification`
-- `confidence`
-- `origin_candidate`
-- `evidence`
-- `policy_result`
-- `review`
-- `audit`
+This field makes the contract more explicit for downstream handling.
 
-This schema defines the original minimal output contract for downstream systems.
+Supported values are:
 
----
+structural_lineage_only
+attribution_suggestion_only
+royalty_assessment_ready
+dispute_ready
+Meaning
+structural_lineage_only
+The claim is limited to lineage inference.
+attribution_suggestion_only
+The claim is suitable for attribution-oriented handling, but not yet for stronger routing.
+royalty_assessment_ready
+The claim is mature enough to be passed to a royalty or contribution assessment layer.
+dispute_ready
+The claim is suitable for dispute preparation or contested review contexts.
 
-### `examples/trace-claim.sample.yaml`
+This field does not turn the claim into enforcement.
+It only clarifies how the claim may be used.
 
-Provides a concrete example of a valid `trace-claim-v0.1`.
-
-It demonstrates:
-
-- how lineage classification is represented
-- how evidence fields are structured
-- how policy outputs are encoded
-- how review and audit metadata are attached
-
-This file is validated in CI against `schemas/trace-claim-v0.1.schema.json`.
-
----
-
-### `schemas/trace-claim-v0.2.schema.json`
-
-Validates the **extended trace claim** artifact emitted by the agent.
-
-`trace-claim-v0.2` preserves the baseline structure while introducing:
-
-- `claim_scope`
-
-This field clarifies the operational scope of a trace claim, such as whether it is limited to lineage inference, attribution suggestion, royalty assessment readiness, or dispute preparation.
-
-This schema is intended for downstream systems that require more explicit governance semantics.
-
----
-
-### `examples/trace-claim-v0.2.sample.yaml`
-
-Provides a concrete example of a valid `trace-claim-v0.2`.
-
-It demonstrates:
-
-- all baseline fields from v0.1
-- explicit `claim_scope`
-- clearer downstream routing intent
-- a more governance-aware output contract
-
-This file is validated in CI against `schemas/trace-claim-v0.2.schema.json`.
-
----
-
-## Processing model
-
-Trace Wing operates as a staged provenance inference pipeline.
-
-Typical state progression:
-
-```text
-OBSERVED
-→ NORMALIZED
-→ PARSED
-→ FINGERPRINTED
-→ CANDIDATE_LINKED
-→ SCORED
-→ CLASSIFIED
-→ ATTRIBUTION_SUGGESTED / HUMAN_REVIEW / ROYALTY_ELIGIBLE / DISPUTED / ARCHIVED
-```
-
-The agent is designed to emit **structured claims**, not rhetorical conclusions.
-
----
-
-## Multi-Wing integration
-
-Trace Wing is intended to run inside a broader Multi-Wing architecture.
-
-Typical integration targets:
-
-- **Log-Wing**  
-  For observation records, snapshots, and timestamped evidence.
-
-- **Logic-Wing**  
-  For policy interpretation, classification review, and high-risk reasoning.
-
-- **Royalty-Wing**  
-  For contribution routing and royalty assessment requests.
-
-- **Dispute Registry**  
-  For objections, re-evaluation, and audit history.
-
-- **Existence Proof / provenance layer**  
-  For author, publication, and timing attestation.
-
-Trace Wing should be understood as a **lineage inference wing**, not a standalone civilization stack.
-
----
-
-## Schema Usage
+Schema Usage
 
 This repository currently uses:
 
-- **1 agent specification**
-- **1 spec schema**
-- **2 trace claim schemas**
-- **2 example trace claim artifacts**
-
-The repository validates both the Trace Wing spec and the emitted trace claim formats across versioned output contracts.
-
----
-
-### 1. Validate the Trace Wing specification
+1 trace claim schema
+1 example trace claim artifact
+1 CI validation workflow
+Validate the trace claim contract
 
 The file:
 
-- `spec/trace-wing-agent-v0.1.yaml`
+examples/trace-claim-v0.2.sample.yaml
 
 is validated against:
 
-- `schemas/trace-wing-agent-v0.1.schema.json`
+schemas/trace-claim-v0.2.schema.json
 
-This ensures that the Trace Wing agent specification remains machine-checkable and structurally stable.
+This ensures that the published example remains structurally valid and machine-readable.
 
----
-
-### 2. Validate the original trace claim contract
-
-The file:
-
-- `examples/trace-claim.sample.yaml`
-
-is validated against:
-
-- `schemas/trace-claim-v0.1.schema.json`
-
-This preserves the minimal baseline output contract for Trace Wing claims.
-
-`trace-claim-v0.1` is the original schema version and does **not** include `claim_scope`.
-
----
-
-### 3. Validate the extended trace claim contract
-
-The file:
-
-- `examples/trace-claim-v0.2.sample.yaml`
-
-is validated against:
-
-- `schemas/trace-claim-v0.2.schema.json`
-
-This extended contract introduces:
-
-- `claim_scope`
-
-The purpose of `claim_scope` is to clarify the operational scope of a trace claim, such as whether it is limited to lineage inference, attribution suggestion, royalty assessment readiness, or dispute preparation.
-
----
-
-### Version positioning
-
-- **`trace-claim-v0.1`**  
-  Minimal baseline trace claim contract.
-
-- **`trace-claim-v0.2`**  
-  Extended trace claim contract with `claim_scope` added to clarify downstream operational meaning.
-
-This preserves backward clarity while allowing governance-oriented expansion.
-
----
-
-### Local validation example
+Local validation example
 
 Install dependencies:
 
-```bash
 pip install pyyaml jsonschema
-```
 
-Validate the spec, both schemas, and both example artifacts locally:
+Validate the schema and sample locally:
 
-```bash
 python - <<'PY'
 import json
 from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
-spec_path = Path("spec/trace-wing-agent-v0.1.yaml")
-spec_schema_path = Path("schemas/trace-wing-agent-v0.1.schema.json")
+schema_path = Path("schemas/trace-claim-v0.2.schema.json")
+sample_path = Path("examples/trace-claim-v0.2.sample.yaml")
 
-claim_v01_schema_path = Path("schemas/trace-claim-v0.1.schema.json")
-claim_v02_schema_path = Path("schemas/trace-claim-v0.2.schema.json")
+with schema_path.open("r", encoding="utf-8") as f:
+    schema = json.load(f)
 
-sample_v01_path = Path("examples/trace-claim.sample.yaml")
-sample_v02_path = Path("examples/trace-claim-v0.2.sample.yaml")
+with sample_path.open("r", encoding="utf-8") as f:
+    sample = yaml.safe_load(f)
 
-with spec_schema_path.open("r", encoding="utf-8") as f:
-    spec_schema = json.load(f)
-
-with claim_v01_schema_path.open("r", encoding="utf-8") as f:
-    claim_v01_schema = json.load(f)
-
-with claim_v02_schema_path.open("r", encoding="utf-8") as f:
-    claim_v02_schema = json.load(f)
-
-with spec_path.open("r", encoding="utf-8") as f:
-    spec_data = yaml.safe_load(f)
-
-with sample_v01_path.open("r", encoding="utf-8") as f:
-    sample_v01_data = yaml.safe_load(f)
-
-with sample_v02_path.open("r", encoding="utf-8") as f:
-    sample_v02_data = yaml.safe_load(f)
-
-Draft202012Validator.check_schema(spec_schema)
-Draft202012Validator.check_schema(claim_v01_schema)
-Draft202012Validator.check_schema(claim_v02_schema)
-
-Draft202012Validator(spec_schema).validate(spec_data)
-Draft202012Validator(claim_v01_schema).validate(sample_v01_data)
-Draft202012Validator(claim_v02_schema).validate(sample_v02_data)
+Draft202012Validator.check_schema(schema)
+Draft202012Validator(schema).validate(sample)
 
 print("All local validations passed.")
 PY
-```
-
----
-
-### CI validation
+CI validation
 
 GitHub Actions automatically validates:
 
-- presence of required files
-- YAML syntax of the Trace Wing spec
-- JSON syntax and structural validity of:
-  - `trace-wing-agent-v0.1.schema.json`
-  - `trace-claim-v0.1.schema.json`
-  - `trace-claim-v0.2.schema.json`
-- YAML syntax of both example claim files
-- schema compliance of the spec
-- schema compliance of both trace claim samples
+presence of the required schema file
+presence of the required sample file
+JSON syntax of the schema
+YAML syntax of the sample
+JSON Schema validity
+schema compliance of the sample artifact
 
 Workflow file:
 
-- `.github/workflows/validate-specs.yml`
+.github/workflows/validate-specs.yml
+Output contract guidance
 
----
+A trace_claim is a structured inference artifact, not a legal verdict.
 
-### Output contract guidance
+This distinction matters.
 
-A `trace_claim` is a structured inference artifact, not a legal verdict.
+The contract is designed to support:
 
-Use version selection according to downstream needs:
+review
+attribution suggestion
+governance-aware routing
+dispute preparation
+royalty assessment preparation
 
-- choose **v0.1** when a minimal baseline claim is sufficient
-- choose **v0.2** when operational scope must be explicit through `claim_scope`
+It is not designed to function as an automatic judgment engine.
 
-This keeps inference portable while allowing gradual governance expansion.
+Recommended usage pattern
 
----
+A practical usage flow looks like this:
 
-## Output contract
+a provenance inference system analyzes an artifact
+it emits a trace_claim
+downstream systems inspect:
+lineage type
+confidence
+evidence
+claim scope
+policy result
+the claim is routed to:
+archive,
+review,
+attribution suggestion,
+royalty assessment,
+or dispute handling
 
-The primary machine output of Trace Wing is a `trace_claim`.
+This separation keeps the contract reusable across multiple governance contexts.
 
-This claim is intended to be:
+Positioning
 
-- auditable
-- reviewable
-- disputable
-- portable across systems
+This repository should be understood as a contract repository, not a full agent repository.
 
-A trace claim is not equivalent to a legal verdict.  
-It is a structured inference artifact.
+A useful mental model is:
 
----
+Trace Wing Agent = the inference-producing system
+Trace Claim v0.2 = the output contract emitted by such a system
+this repository = the validation-ready publication of that contract
 
-## Recommended usage pattern
+So even if the broader architecture grows later, this repository already has a clear role:
+it defines the shape of the claim packet.
 
-A practical deployment flow looks like this:
+Safety posture
 
-1. observe a target artifact
-2. normalize and parse structure
-3. generate multi-layer fingerprints
-4. retrieve lineage candidates
-5. compute confidence and novelty
-6. emit a `trace_claim`
-7. route the result to:
-   - attribution suggestion,
-   - human review,
-   - royalty assessment request,
-   - or dispute preparation
+This repository should not be interpreted as support for automatic accusation systems.
 
-This separation keeps the repository modular and governance-friendly.
+Recommended safeguards for systems consuming this contract include:
 
----
+no automatic public accusation
+no automatic legal conclusion
+no silent penalty execution
+human review for high-impact usage
+dispute channels for contested cases
+transparent logging of downstream policy decisions
 
-## Safety posture
+The contract becomes stronger when its limits are explicit.
 
-Trace Wing should never be used as an automatic accusation engine.
+Versioning
 
-Recommended safeguards include:
+Current published contract:
 
-- no automatic public accusation
-- no automatic legal conclusion
-- no silent penalty execution
-- human review for high-impact claims
-- preserved dispute channel
-- full policy logging
+Trace Claim: trace-claim-v0.2
 
-The stronger the inference engine becomes, the more important restraint becomes.
+Suggested versioning logic:
 
----
+increment patch version for wording or non-breaking clarification
+increment minor version for additive fields
+increment major version for breaking structural changes
 
-## Versioning
+Because claim_scope changes the operational interpretation of the claim, it is correctly introduced as a new versioned contract rather than a silent edit.
 
-Current draft set:
+Future extensions
 
-- **Agent spec:** `trace-wing-agent-v0.1`
-- **Baseline claim schema:** `trace-claim-v0.1`
-- **Extended claim schema:** `trace-claim-v0.2`
+Possible next steps include:
 
-Suggested versioning approach:
+adding score_breakdown
+adding weight_profile_id
+adding counter_evidence_summary
+publishing a baseline trace-claim-v0.1 side by side
+publishing a full Trace Wing agent spec in a separate or expanded repository
+bridging to Signed Impact Attestation or dispute-oriented registries
 
-- increment patch version for wording or non-breaking clarification
-- increment minor version for additive fields
-- increment major version for breaking structural changes
+This lightweight structure is intentionally compatible with future expansion.
 
----
-
-## Future extensions
-
-Planned directions include:
-
-- signed trace claim support
-- federation across multiple Memory Galaxy nodes
-- bridges to Signed Impact Attestation
-- automatic citation suggestion
-- false-positive reduction loops
-- richer lineage graphs and mutation trees
-
----
-
-## Contributing
+Contributing
 
 Contributions should preserve the following properties:
 
-- machine-validatable structure
-- clean separation between inference and enforcement
-- explicit policy boundaries
-- strong auditability
-- compatibility with Multi-Wing style integration
+machine-validatable structure
+explicit operational boundaries
+auditability
+portability across downstream systems
+clear separation between inference and enforcement
 
-For substantial changes, update:
+For any structural change, update:
 
-- the spec
-- relevant schema files
-- example artifacts
-- the validation workflow
+the schema
+the example artifact
+the validation workflow
+the documentation
 
 together, not separately.
 
----
+License
 
-## License
+See LICENSE for repository licensing terms.
 
-Choose a license appropriate to your intended governance model.
+If this contract is later embedded into a larger governance stack, additional policy documents may be added outside this repository.
 
-For open specification publishing, permissive licenses are often suitable for the schema and documentation layer.  
-For controlled ecosystem use, additional governance documents may be appropriate.
+Summary
 
----
+Trace Claim v0.2 defines a lightweight, versioned output contract for provenance inference systems.
 
-## Summary
+It is built to carry:
 
-Trace Wing Agent v0.1 defines a portable provenance inference layer for Multi-Wing systems.
+structural lineage
+attribution-oriented inference
+explicit operational scope
+evidence bundles
+governance-aware routing intent
 
-It is built to answer questions like:
-
-- What structure is present here?
-- Which lineage does it most likely belong to?
-- How strong is that inference?
-- What action is appropriate next?
-
-It is not designed to shout.  
-It is designed to trace.
+It does not judge.
+It does not accuse.
+It makes structured tracing portable.
